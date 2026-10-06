@@ -1,0 +1,16 @@
+name: bounty-event-eligibility
+on:
+  push:
+    paths:
+      - 'ci/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  required_check:
+    name: bounty-required-20261006
+    runs-on: ubuntu-latest
+    steps:
+      - name: Record event and SHA
+        shell: bash
+        run: printf 'event=%s sha=%s\n' "$GITHUB_EVENT_NAME" "$GITHUB_SHA"
