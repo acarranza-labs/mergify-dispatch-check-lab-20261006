@@ -1,0 +1,15 @@
+merge_queue:
+  mode: serial
+  max_parallel_checks: 1
+
+queue_rules:
+  - name: dispatch-probe
+    batch_size: 1
+    max_checks_retries: 0
+    merge_method: merge
+    branch_protection_injection_mode: queue
+    queue_conditions:
+      - base = main
+      - check-success = @github-actions/bounty-hold-20261006
+
+pull_request_rules: []
