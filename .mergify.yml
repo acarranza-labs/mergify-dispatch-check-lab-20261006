@@ -3,13 +3,21 @@ merge_queue:
   max_parallel_checks: 1
 
 queue_rules:
-  - name: dispatch-probe
+  - name: dispatch-provenance-v2
     batch_size: 1
     max_checks_retries: 0
     merge_method: merge
+    update_method: rebase
+    update_bot_account: acarranza-labs
     branch_protection_injection_mode: queue
     queue_conditions:
       - base = main
-      - check-success = @github-actions/bounty-hold-20261006
 
-pull_request_rules: []
+pull_request_rules:
+  - name: queue only P6 v2 owner provenance candidate
+    conditions:
+      - base = main
+      - -draft
+      - title = P6 restricted App v2 provenance candidate
+    actions:
+      queue: {}
