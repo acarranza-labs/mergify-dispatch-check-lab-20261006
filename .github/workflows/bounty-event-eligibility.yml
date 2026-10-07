@@ -11,6 +11,15 @@ jobs:
     name: bounty-required-20261006
     runs-on: ubuntu-latest
     steps:
-      - name: Record event and SHA
+      - name: Enforce event and actor provenance
         shell: bash
-        run: printf 'event=%s sha=%s\n' "$GITHUB_EVENT_NAME" "$GITHUB_SHA"
+        env:
+          BOUNTY_EVENT_NAME: ${{ github.event_name }}
+          BOUNTY_ACTOR: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          if [[ "$BOUNTY_EVENT_NAME" == "workflow_dispatch" ]]; then
+            exit 0
+          fi
+          [[ "$BOUNTY_EVENT_NAME" == "push" ]]
+          [[ "$BOUNTY_ACTOR" == "acarranza-labs" ]]
